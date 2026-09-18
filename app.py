@@ -196,32 +196,27 @@ input_data = pd.DataFrame({
 # --------------------------------------------------
 # Prediction
 # --------------------------------------------------
+# --------------------------------------------------
+# Prediction
+# --------------------------------------------------
 
 if st.button("🔮 Predict Churn", use_container_width=True):
 
     probability = model.predict_proba(input_data)[0][1]
 
-    # Threshold selected during your analysis
+    # Churn threshold = 25%
     threshold = 0.25
 
-    if probability >= threshold:
-        prediction = "Yes"
-    else:
-        prediction = "No"
-
     st.subheader("Prediction Result")
-
-    if prediction == "Yes":
-        st.error("⚠️ Customer is likely to churn")
-    else:
-        st.success("✅ Customer is unlikely to churn")
 
     st.metric(
         "Churn Probability",
         f"{probability:.2%}"
     )
 
-    st.write(
-        f"Classification threshold: **{threshold:.2f}**"
-    )
+    st.info("Customers with a churn probability greater than 25% are classified as likely to churn.")
 
+    if probability > threshold:
+        st.error("⚠️ Customer is likely to churn")
+    else:
+        st.success("✅ Customer is unlikely to churn")
