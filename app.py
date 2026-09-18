@@ -7,7 +7,7 @@ import pickle
 # Load trained model
 # --------------------------------------------------
 
-with open("churn_model.pkl", "rb") as file:
+with open("churn_model (1).pkl", "rb") as file:
     model = pickle.load(file)
 
 
