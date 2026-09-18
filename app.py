@@ -214,7 +214,7 @@ if st.button("🔮 Predict Churn", use_container_width=True):
         f"{probability:.2%}"
     )
 
-    st.info("Customers with a churn probability greater than 25% are classified as likely to churn.")
+    st.info("Customers with a churn probability greater than 25% are classified as likely to churn. due to some issues we use the threshold value to 25 rather than 50 so consider the churn if its greater than 25 percentage")
 
     if probability > threshold:
         st.error("⚠️ Customer is likely to churn")
