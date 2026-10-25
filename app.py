@@ -1,96 +1,96 @@
+from pathlib import Path
 
 import joblib
 import pandas as pd
 import streamlit as st
-from pathlib import Path
 
-# =========================================================
-# PAGE CONFIGURATION
-# =========================================================
+
+# ---------------------------------------------------------
+# Page configuration
+# ---------------------------------------------------------
 st.set_page_config(
-    page_title="AttritionIQ | Customer Analytics",
+    page_title="Customer Churn Intelligence",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
 MODEL_PATH = Path(__file__).parent / "customer_chrun.joblib"
 
 
-# =========================================================
-# LOAD MODEL
-# =========================================================
-@st.cache_resource
-def load_model():
-    if not MODEL_PATH.exists():
-        raise FileNotFoundError(
-            f"Model not found: {MODEL_PATH.name}. "
-            "Place the model file in the same folder as app.py."
-        )
-    return joblib.load(MODEL_PATH)
+# ---------------------------------------------------------
+# Styling
+# ---------------------------------------------------------
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-
-# =========================================================
-# CUSTOM CSS
-# =========================================================
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-html, body, [class*="css"] {
-    font-family: 'Inter', sans-serif;
-}
-
-.stApp {
-    background:
-        radial-gradient(ellipse at 5% 0%, #172554 0%, transparent 35%),
-        radial-gradient(ellipse at 95% 5%, #312e81 0%, transparent 30%),
-        #080d1a;
-    color: #f1f5f9;
-}
-
-[data-testid="stHeader"] {
-    background: transparent;
-}
-
-[data-testid="stSidebar"] {
-    background: #0c1324;
-    border-right: 1px solid #26314a;
-}
-
-[data-testid="stSidebar"] * {
-    color: #dbe4f0;
-}
-
-.block-container {
-    padding-top: 2rem;
-    padding-bottom: 3rem;
-    max-width: 1450px;
-}
-
-.hero {
-    padding: 30px 32px;
-    border-radius: 22px;
-    border: 1px solid #33456b;
-    background: linear-gradient(120deg, #172554 0%, #312e81 55%, #4338ca 100%);
-    margin-bottom: 25px;
-}
-
-.hero-tag {
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 20px;
-    background: #ffffff18;
-    border: 1px solid #ffffff30;
-    color: #ddd6fe;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1px;
-}
-
-.hero h1 {
-    color: white;
-    font-size: clamp(28px, 4vw, 43px);
-    font-weight: 800;
-    margin: 15px 0 8px 0;
-}
+    html, body, [class*="css"] {
+        font-family: 'DM Sans', sans-serif;
+    }
+    .stApp {
+        background:
+            radial-gradient(circle at 10% 0%, rgba(99, 102, 241, 0.17), transparent 28%),
+            radial-gradient(circle at 95% 10%, rgba(168, 85, 247, 0.12), transparent 24%),
+            #0b1020;
+        color: #eef2ff;
+    }
+    [data-testid="stHeader"] { background: rgba(11, 16, 32, 0.85); }
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #11182b 0%, #0c1222 100%);
+        border-right: 1px solid rgba(148, 163, 184, 0.15);
+    }
+    h1, h2, h3 {
+        font-family: 'Manrope', sans-serif !important;
+        color: #f8fafc !important;
+    }
+    p, label, span, div { }
+    .hero {
+        padding: 1.5rem 1.7rem;
+        border: 1px solid rgba(167, 139, 250, 0.25);
+        border-radius: 22px;
+        background: linear-gradient(120deg, rgba(79, 70, 229, .22), rgba(30, 41, 59, .55));
+        margin-bottom: 1.2rem;
+    }
+    .eyebrow {
+        color: #c4b5fd;
+        font-size: .78rem;
+        font-weight: 700;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+    }
+    .hero-title {
+        font-family: 'Manrope', sans-serif;
+        font-size: clamp(1.8rem, 4vw, 2.65rem);
+        font-weight: 800;
+        line-height: 1.15;
+        margin: .45rem 0 .6rem;
+        color: #ffffff;
+    }
+    .hero-copy { color: #cbd5e1; font-size: 1rem; max-width: 800px; }
+    .metric-card {
+        border: 1px solid rgba(148, 163, 184, .18);
+        border-radius: 16px;
+        background: rgba(15, 23, 42, .76);
+        padding: 1rem 1.1rem;
+        min-height: 100px;
+    }
+    .metric-label { color: #94a3b8; font-size: .82rem; }
+    .metric-value { color: #f8fafc; font-size: 1.55rem; font-weight: 800; margin-top: .25rem; }
+    .section-card {
+        border: 1px solid rgba(148, 163, 184, .16);
+        background: rgba(15, 23, 42, .58);
+        padding: 1.1rem 1.2rem;
+        border-radius: 18px;
+        margin: .4rem 0 1rem;
+    }
+    .muted { color: #a5b4fc; font-size: .9rem; }
+    div.stButton > button, div[data-testid="stFormSubmitButton"] > button {
+        width: 100%;
+        border: 0;
+        border-radius: 12px;
+        min-height: 3rem;
+        color: white;
+        font-weight: 700;
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
